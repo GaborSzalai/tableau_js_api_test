@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Respond to Events</title>
+    
+    <script type="text/javascript" src="https://public.tableau.com/javascripts/api/tableau-2.min.js"></script>
+    
+    <script type="text/javascript">
+        var viz;
+        
+        function initViz() {
+            var containerDiv = document.getElementById("vizContainer"),
+                url = "http://public.tableau.com/views/RegionalSampleWorkbook/College",
+                options = {
+                    "Academic Year": "",
+                    hideTabs: true,
+                    onFirstInteractive: function () {
+                        listenToFiltersSelection();
+						listenToResetSelection()
+                    }
+                };
+            
+            viz = new tableau.Viz(containerDiv, url, options);
+        }
+
+        function listenToFiltersSelection() {
+            viz.addEventListener(tableau.TableauEventName.FILTER_CHANGE, onFiltersSelection);
+        }
+		
+		function listenToResetSelection() {
+            viz.addEventListener(tableau.TableauEventName.TOOLBAR_STATE_CHANGE, onFiltersSelection);
+        }
+
+        function onFiltersSelection(filtersEvent) {
+            return viz.getWorkbook().getActiveSheet().getFiltersAsync().then(reportSelectedFilters)
+		}
+        function reportSelectedFilters(filters) {
+            var html = "these filter are applied: "
+
+			if (filters[1].getAppliedValues().length < 2) {html = html + filters[1].getAppliedValues()[0].formattedValue}
+			if (filters[2].getAppliedValues().length < 2) {html = html + " " + filters[2].getAppliedValues()[0].formattedValue}
+			
+			var infoDiv = document.getElementById('filterDetails');
+            infoDiv.innerHTML = html;
+        }
+    </script>
+</head>
+
+<body onload="initViz();">
+    <div id="vizContainer"></div>
+    <br>
+    <div id="filterDetails">Information about selected Filters displays here.</div>
+</body>
+
+</html>
