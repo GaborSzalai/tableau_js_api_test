@@ -11,7 +11,7 @@
         
         function initViz() {
             var containerDiv = document.getElementById("vizContainer"),
-                url = "https://public.tableau.com/views/RegionalSampleWorkbook/College",
+                url = "http://public.tableau.com/views/RegionalSampleWorkbook/College",
                 options = {
                     "Academic Year": "",
                     hideTabs: true,
@@ -38,8 +38,8 @@
         function reportSelectedFilters(filters) {
             var html = "these filter are applied: "
 
-			if (filters[1].getAppliedValues().length < 2) {html = html + filters[1].getAppliedValues()[0].formattedValue}
-			if (filters[2].getAppliedValues().length < 2) {html = html + " " + filters[2].getAppliedValues()[0].formattedValue}
+			if (filters[1].getAppliedValues().length < 2) {html = html + filters[1].getFieldName() + ": "+ filters[1].getAppliedValues()[0].formattedValue}
+			if (filters[2].getAppliedValues().length < 2) {html = html + " " + filters[2].getFieldName() + ": "+ filters[2].getAppliedValues()[0].formattedValue}
 			
 			var infoDiv = document.getElementById('filterDetails');
             infoDiv.innerHTML = html;
